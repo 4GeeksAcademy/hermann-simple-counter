@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 
 export let Counter = (props) =>{
     return (
-        <div className="bigCounter">
-            <div className="calendar">
+        <div className="counter">
+            <div className="clock">
                 <i className="far fa-clock"></i>
             </div>
             <div className="four">{props.digitFour % 10}</div>
