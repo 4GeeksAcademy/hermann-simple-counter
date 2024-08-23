@@ -1,34 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
+import React, {useState, useEffect}from 'react';
 
-export let Counter = (props) =>{
+export const Tempo = () => {
+    const [counter, setCounter] = useState(0);
+    const [running, setRunning] = useState(false);
+
+    useEffect (() => {
+        const intervalId = setInterval(() => {
+            setCounter((prev) => prev + 1);
+        }, 1000);
+        
+        return () => {
+            clearInterval(intervalId);
+        }
+    }, []);
+
+    const displayNumber = String(counter).padStart(6, '0').split('');
+
+    const handleStart = () => {
+        setCounter(0);
+    };
+
     return (
-        <div className="counter">
-            <div className="clock">
-                <i className="far fa-clock"></i>
+        <div className="container">
+            <div className="counter">
+            {displayNumber.map((digit, index) => (
+                <div key={index}>
+                    {digit}
+                </div>
+            ))}
             </div>
-            <div className="four">{props.digitFour % 10}</div>
-            <div className="three">{props.digitThree % 10}</div>
-            <div className="two">{props.digitTwo % 10}</div>
-            <div className="one">{props.digitOne % 10}</div>
+            <button type="button" class="btn btn-outline-success">Start</button>
+            <button type="button" class="btn btn-outline-danger" onClick={handleStart}>Reset</button>
         </div>
     );
 }
-
-Counter.propTypes = {
-    digitOne: PropTypes.number,
-    digitTwo: PropTypes.number,
-    digitThree: PropTypes.number,
-    digitFour: PropTypes.number
-};
-
-let counter = 0;
-setInterval(function(){
-    const four = Math.floor(counter/1000);
-    const three = Math.floor(counter/100);
-    const two = Math.floor(counter/10);
-    const one = Math.floor(counter/1);
-    counter ++;
-    ReactDOM.render(<Counter digitOne={one} digitTwo={two} digitThree={three} digitFour={four} />, document.querySelector('#app'));
-}, 1000);
